@@ -55,6 +55,7 @@ Valid filetypes include:
    ;   video file
    c   calendar file
    M   MIME file (mbox, emails etc)
+   w   Link to external URL
 
 Additional type characters supported by Gophernicus:
    #          comment - rest of the line is ignored
@@ -75,7 +76,7 @@ Examples of valid resource lines:
 1External link 	/	gopher.floodgap.com	70
 1External relative link (which shouldn't work)	subdir/	gopher.domain.dom	70
 0Finger-to-gopher link	user	example.test	79
-hLink to a website	URL:http://www.google.com/
+wLink to a website	http://www.google.com/   ignored.invalid   1
 
 hLink to a local html page	/path/to/file.html
 5Link to an tar archive	/path/to/archive.tar.gz
