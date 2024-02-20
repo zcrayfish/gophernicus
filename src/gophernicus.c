@@ -692,15 +692,7 @@ get_selector:
 		goto get_selector;
 	}
 #endif
-
-	/* Handle hURL: redirect page */
-	if (sstrncmp(selector, "URL:") == MATCH) {
-		st.req_filetype = TYPE_HTML;
-		sstrlcpy(st.req_selector, selector);
-		url_redirect(&st);
-		return OK;
-	}
-
+	
 	/* Handle gopher+ root requests (UMN gopher client is seriously borken) */
 	if (sstrncmp(selector, "\t$") == MATCH) {
 		printf("+-1" CRLF);
