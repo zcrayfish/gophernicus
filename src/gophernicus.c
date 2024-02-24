@@ -132,19 +132,6 @@ void die(state *st, const char *message, const char *description)
 		fwrite(error_gif, sizeof(error_gif), 1, stdout);
 	}
 
-	/* Handle HTML errors */
-	else if (st->req_filetype == TYPE_HTML) {
-		printf("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2 Final//EN\">\n"
-			"<HTML>\n<HEAD>\n"
-			"  <META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html;charset=iso-8859-1\">\n"
-			"  <TITLE>" ERROR_PREFIX "%1$s %2$s</TITLE>\n"
-			"</HEAD>\n<BODY>\n"
-			"<STRONG>" ERROR_PREFIX "%1$s %2$s</STRONG>\n"
-			"<PRE>", message, description);
-		footer(st);
-		printf("</PRE>\n</BODY>\n</HTML>\n");
-	}
-
 	/* Use plain text error for other filetypes */
 	else {
 		printf(ERROR_PREFIX "%s %s" CRLF, message, description);
