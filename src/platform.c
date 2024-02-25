@@ -246,8 +246,8 @@ void platform(state *st)
 		fclose(fp);
 	}
 
-	/* Alpine Linux version should be in /etc/alpine-version */
-	if (!*release && (fp = fopen("/etc/alpine-version", "r"))) {
+	/* Alpine Linux version should be in /etc/alpine-release */
+	if (!*release && (fp = fopen("/etc/alpine-release", "r"))) {
 		sstrlcpy(sysname, "Alpine Linux");
 		if (fgets (release, sizeof(release), fp) != NULL)
 			if ((c = strchr(release, '/'))) *c = '\0';
