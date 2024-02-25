@@ -303,9 +303,7 @@ char gopher_filetype(state *st, char *file, char magic)
 	if (sstrncmp(buf, "ID3") == MATCH) return TYPE_SOUND;
 
 	/* Some video formats */
-	/* 3gp and 3g2 */
-	if (sstrncmp(buf, "ftyp3g") == MATCH) return TYPE_GOPHERPLUS_MOVIE;
-	/* webp and matroska */
+	/* matroska */
 	if (sstrncmp(buf, "\032\105\337\243") == MATCH) return TYPE_GOPHERPLUS_MOVIE;
 	/* mpeg1 and mpeg2 video */
 	if (sstrncmp(buf, "\000\000\001\272") == MATCH) return TYPE_GOPHERPLUS_MOVIE;
