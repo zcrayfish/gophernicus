@@ -245,6 +245,14 @@ void platform(state *st)
 			if ((c = strchr(release, '/'))) *c = '\0';
 		fclose(fp);
 	}
+
+	/* Alpine Linux version should be in /etc/alpine-version */
+	if (!*release && (fp = fopen("/etc/alpine-version", "r"))) {
+		sstrlcpy(sysname, "Alpine Linux");
+		if (fgets (release, sizeof(release), fp) != NULL)
+			if ((c = strchr(release, '/'))) *c = '\0';
+		fclose(fp);
+	}
 #endif
 
 	/* Haiku OS */
