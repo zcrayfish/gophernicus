@@ -310,14 +310,9 @@ char gopher_filetype(state *st, char *file, char magic)
 	/* mpeg1 and mpeg2 video */
 	if (sstrncmp(buf, "\000\000\001\272") == MATCH) return TYPE_GOPHERPLUS_MOVIE;
 	if (sstrncmp(buf, "\000\000\001\263") == MATCH) return TYPE_GOPHERPLUS_MOVIE;
-	/* mp4 video */
-	if (sstrncmp(buf, "\146\164\171\160\115\123\116\126") == MATCH) return TYPE_GOPHERPLUS_MOVIE;
-
+	
 	/* UUENCODED file; we only look for ones that are user readable, otherwise assume nonsense */
-	if (sstrncmp(buf, "begin 4") == MATCH ||
-		sstrncmp(buf, "begin 5") == MATCH ||
-		sstrncmp(buf, "begin 6") == MATCH ||
-		sstrncmp(buf, "begin 7") == MATCH) return TYPE_UUENCODED;
+	if (sstrncmp(buf, "begin ") == MATCH) return TYPE_UUENCODED;
 
 	/* Unknown content - binary or text? */
 	if (memchr(buf, '\0', i)) return TYPE_BINARY;
