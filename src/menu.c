@@ -264,10 +264,14 @@ char gopher_filetype(state *st, char *file, char magic)
 		sstrncmp(buf, "GIF87a") == MATCH) return TYPE_GIF;
 
 	/* JPEG images */
-	if (sstrncmp(buf, "\377\330\377\340") == MATCH) return TYPE_IMAGE;
+	if (sstrncmp(buf, "\377\330\377") == MATCH) return TYPE_IMAGE;
 
 	/* PNG images */
 	if (sstrncmp(buf, "\211PNG") == MATCH) return TYPE_IMAGE;
+
+	/* TIFF images */
+	if (sstrncmp(buf, "\111\111\052\000") == MATCH) return TYPE_GOPHERPLUS_IMAGE;
+	if (sstrncmp(buf, "\115\155\000\052") == MATCH) return TYPE_GOPHERPLUS_IMAGE;
 
 	/* mbox */
 	if (strstr(buf, "\nFrom: ") &&
@@ -276,24 +280,49 @@ char gopher_filetype(state *st, char *file, char magic)
 	/* MIME */
 	if (strstr(buf, "\nContent-Type: ")) return TYPE_MIME;
 
-	/* HTML files */
+	/* HTML or XML files (7 or 8 bit without BOM) */
 	if (buf[0] == '<' &&
 		(strstr(buf, "<html") ||
-		 strstr(buf, "<HTML"))) return TYPE_HTML;
+		 strstr(buf, "<HTML") ||
+		 strstr(buf, "<?xml "))) return TYPE_HTML;
 
 	/* PDF and PostScript */
 	if (sstrncmp(buf, "%PDF-") == MATCH ||
-		sstrncmp(buf, "%!") == MATCH) return TYPE_DOC;
+		sstrncmp(buf, "%!") == MATCH) return TYPE_PDF;
 
 	/* compress and gzip */
 	if (sstrncmp(buf, "\037\235\220") == MATCH ||
 		sstrncmp(buf, "\037\213\010") == MATCH) return TYPE_GZIP;
 
+	/* Some audio formats */
+	/* FLAC */
+	if (sstrncmp(buf, "fLaC") == MATCH) return TYPE_SOUND;
+	/* MIDI */
+	if (sstrncmp(buf, "MThd") == MATCH) return TYPE_SOUND;
+	/* MP3s with ID3 header */
+	if (sstrncmp(buf, "ID3") == MATCH) return TYPE_SOUND;
+
+	/* Some video formats */
+	/* 3gp and 3g2 */
+	if (sstrncmp(buf, "ftyp3g") == MATCH) return TYPE_GOPHERPLUS_MOVIE;
+	/* webp and matroska */
+	if (sstrncmp(buf, "\032\105\337\243") == MATCH) return TYPE_GOPHERPLUS_MOVIE;
+	/* mpeg1 and mpeg2 video */
+	if (sstrncmp(buf, "\000\000\001\272") == MATCH) return TYPE_GOPHERPLUS_MOVIE;
+	if (sstrncmp(buf, "\000\000\001\263") == MATCH) return TYPE_GOPHERPLUS_MOVIE;
+	/* mp4 video */
+	if (sstrncmp(buf, "\146\164\171\160\115\123\116\126") == MATCH) return TYPE_GOPHERPLUS_MOVIE;
+
+	/* UUENCODED file; we only look for ones that are user readable, otherwise assume nonsense */
+	if (sstrncmp(buf, "begin 4") == MATCH ||
+		sstrncmp(buf, "begin 5") == MATCH ||
+		sstrncmp(buf, "begin 6") == MATCH ||
+		sstrncmp(buf, "begin 7") == MATCH) return TYPE_UUENCODED;
+
 	/* Unknown content - binary or text? */
 	if (memchr(buf, '\0', i)) return TYPE_BINARY;
 	return st->default_filetype;
 }
-
 
 /*
  * Handle gophermaps
