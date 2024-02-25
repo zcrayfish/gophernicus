@@ -172,12 +172,12 @@ size_t strlcat(char *dst, const char *src, size_t siz);
 #define MATCH        0
 #define WRAP_DENIED    0
 
-
 /* Gopher filetypes */
 #define TYPE_TEXT    '0'
 #define TYPE_MENU    '1'
 #define TYPE_ERROR    '3'
 #define TYPE_GZIP    '5'
+#define TYPE_UUENCODED  '6'
 #define TYPE_QUERY    '7'
 #define TYPE_BINARY    '9'
 #define TYPE_GIF    'g'
@@ -186,6 +186,10 @@ size_t strlcat(char *dst, const char *src, size_t siz);
 #define TYPE_IMAGE    'I'
 #define TYPE_MIME    'M'
 #define TYPE_DOC    'd'
+#define TYPE_PDF    'P'
+#define TYPE_SOUND  's'
+#define TYPE_GOPHERPLUS_MOVIE  ';'
+#define TYPE_GOPHERPLUS_IMAGE  ':'
 #define TYPE_TITLE    '!'
 
 /* Protocols */
@@ -213,7 +217,7 @@ size_t strlcat(char *dst, const char *src, size_t siz);
 #define DEFAULT_TAG		"gophertag"
 #define DEFAULT_CGI		"/cgi-bin/"
 #define DEFAULT_USERDIR		"public_gopher"
-#define DEFAULT_WIDTH       67
+#define DEFAULT_WIDTH       74
 #define DEFAULT_CHARSET		UTF_8
 #define MIN_WIDTH		33
 #define MAX_WIDTH		200
