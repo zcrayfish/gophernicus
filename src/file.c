@@ -101,6 +101,50 @@ void send_text_file(state *st)
 	fclose(fp);
 }
 
+
+/*
+ * Print hURL redirect page
+ */
+void url_redirect(state *st)
+{
+	char unsafe[BUFSIZE];
+
+	/* Basic security checking */
+	sstrlcpy(unsafe, st->req_selector + 4);
+
+	char dest[BUFSIZE];
+	html_encode(unsafe, dest, BUFSIZE);
+
+	if (sstrncmp(dest, "http://") != MATCH &&
+		sstrncmp(dest, "https://") != MATCH &&
+		sstrncmp(dest, "ftp://") != MATCH &&
+		sstrncmp(dest, "irc://") != MATCH &&
+		sstrncmp(dest, "mailto:") != MATCH)
+		die(st, ERR_ACCESS, "Refusing to HTTP redirect unsafe protocols");
+
+	log_info("request for \"gopher%s://%s:%i/h%s\" from %s",
+	         st->server_port == st->server_tls_port ? "s" : "",
+	         st->server_host,
+	         st->server_port,
+	         st->req_selector,
+	         st->req_remote_addr);
+
+	log_combined(st, HTTP_OK);
+
+	/* Output HTML */
+	printf("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2 Final//EN\">\n"
+		"<HTML>\n<HEAD>\n"
+		"  <META HTTP-EQUIV=\"Refresh\" content=\"1;URL=%1$s\">\n"
+		"  <META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html;charset=iso-8859-1\">\n"
+		"  <TITLE>URL Redirect page</TITLE>\n"
+		"</HEAD>\n<BODY>\n"
+		"<STRONG>Redirecting to <A HREF=\"%1$s\">%1$s</A></STRONG>\n"
+		"<PRE>\n", dest);
+	footer(st);
+	printf("</PRE>\n</BODY>\n</HTML>\n");
+}
+
+
 /*
  * Handle /server-status
  */
@@ -333,7 +377,7 @@ static void run_cgi(state *st, char *script, char *arg)
 	}
 
 	/* Didn't work - die */
-	die(st, ERR_ACCESS, NULL);
+	die(st, ERR_ACCESS, "");
 }
 
 
