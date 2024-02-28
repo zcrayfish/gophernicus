@@ -308,7 +308,7 @@ char gopher_filetype(state *st, char *file, char magic)
 	/* mpeg1 and mpeg2 video */
 	if (sstrncmp(buf, "\000\000\001\272") == MATCH) return TYPE_GOPHERPLUS_MOVIE;
 	if (sstrncmp(buf, "\000\000\001\263") == MATCH) return TYPE_GOPHERPLUS_MOVIE;
-	
+
 	/* UUENCODED file; we only look for ones that are user readable, otherwise assume nonsense */
 	if (sstrncmp(buf, "begin ") == MATCH) return TYPE_UUENCODED;
 
@@ -465,9 +465,8 @@ static int gophermap(state *st, char *mapfile, int depth)
 			port = atoi(c + 1);
 		}
 
-		/* Handle remote, absolute and hURL gopher resources */
-		if (sstrncmp(selector, "URL:") == MATCH ||
-			selector[0] == '/' ||
+		/* Handle remote and absolute gopher resources */
+		if (selector[0] == '/' ||
 			host != st->server_host) {
 
 			printf("%c%s\t%s\t%s\t%i" CRLF, type, name,
