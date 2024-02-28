@@ -679,19 +679,6 @@ get_selector:
 	}
 #endif
 
-	/* Handle gopher+ root requests (UMN gopher client is seriously borken) */
-	if (sstrncmp(selector, "\t$") == MATCH) {
-		printf("+-1" CRLF);
-		printf("+INFO: 1Main menu\t\t%s\t%i" CRLF,
-			st.server_host,
-			st.server_port);
-		printf("+VIEWS:" CRLF " application/gopher+-menu: <512b>" CRLF);
-		printf("." CRLF);
-
-		log_debug("got a request for gopher+ root menu");
-		return OK;
-	}
-
 	/* Convert HTTP request to gopher (respond using headerless HTTP/0.9) */
 	if (st.opt_http_requests && (
 		sstrncmp(selector, "GET ") == MATCH ||
