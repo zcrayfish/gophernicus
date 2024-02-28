@@ -107,28 +107,6 @@ void footer(state *st)
 	}
 }
 
-void html_encode(const char *unsafe, char *dest, int bufsize)
-{
-	char literals[] = "!#$&'()*+,/:;=?@[]-_.~";
-	int i = 0, j = 0;
-	while (unsafe[i] != '\0') {
-		if (j >= bufsize - 5) {
-			break;
-		}
-		if (strchr(literals, unsafe[i]) ||
-			(unsafe[i] >= 'a' && unsafe[i] <= 'z') ||
-			(unsafe[i] >= 'A' && unsafe[i] <= 'Z') ||
-			(unsafe[i] >= '0' && unsafe[i] <= '9')) {
-			dest[j] = unsafe[i];
-			i += 1;
-			j += 1;
-		} else {
-			j += snprintf(&dest[j], BUFSIZE - j, "%%%02x", unsafe[i]);
-			i += 1;
-		}
-	}
-}
-
 /*
  * Print error message & exit
  */
@@ -151,23 +129,6 @@ void die(state *st, const char *message, const char *description)
 	/* Handle image errors */
 	else if (st->req_filetype == TYPE_GIF || st->req_filetype == TYPE_IMAGE) {
 		fwrite(error_gif, sizeof(error_gif), 1, stdout);
-	}
-
-	/* Handle HTML errors */
-	else if (st->req_filetype == TYPE_HTML) {
-		char safe_message[BUFSIZE];
-		html_encode(message, safe_message, BUFSIZE);
-		char safe_description[BUFSIZE];
-		html_encode(description, safe_description, BUFSIZE);
-		printf("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2 Final//EN\">\n"
-			"<HTML>\n<HEAD>\n"
-			"  <META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html;charset=iso-8859-1\">\n"
-			"  <TITLE>" ERROR_PREFIX "%1$s %2$s</TITLE>\n"
-			"</HEAD>\n<BODY>\n"
-			"<STRONG>" ERROR_PREFIX "%1$s %2$s</STRONG>\n"
-			"<PRE>", safe_message, safe_description);
-		footer(st);
-		printf("</PRE>\n</BODY>\n</HTML>\n");
 	}
 
 	/* Use plain text error for other filetypes */
