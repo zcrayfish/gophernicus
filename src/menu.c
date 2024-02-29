@@ -311,6 +311,7 @@ char gopher_filetype(state *st, char *file, char magic)
 
 	/* UUENCODED file; we only look for ones that are user readable, otherwise assume nonsense */
 	if (sstrncmp(buf, "begin ") == MATCH) return TYPE_UUENCODED;
+	if (sstrncmp(buf, "begin-base64 ") == MATCH) return TYPE_UUENCODED;
 
 	/* Unknown content - binary or text? */
 	if (memchr(buf, '\0', i)) return TYPE_BINARY;
