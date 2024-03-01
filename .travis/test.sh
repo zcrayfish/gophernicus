@@ -240,7 +240,13 @@ fi
 
 #test 6, ensure gophericus dies quickly if run as root
 if [ "$(id -u)" -ne 0 ]; then
-  echo 'test6 skipped (check if gophernicus rightly refuses to run as root)'
+  if [ -e "$(which sudo)" ]; then
+    sudo -n printf "/\r\n" | src/gophernicus -h test.invalid -nf -nu -nv -nx -nf -nd -r "$TEMPDIR" > "$TEMPDIR"/test6.output
+  elif [ -e "$(which doas)" ]; then
+    doas -n printf "/\r\n" | src/gophernicus -h test.invalid -nf -nu -nv -nx -nf -nd -r "$TEMPDIR" > "$TEMPDIR"/test6.output
+  else
+    echo 'test6 skipped (Cannot obtain root)'
+  fi
 else
   printf "/\r\n" | src/gophernicus -h test.invalid -nf -nu -nv -nx -nf -nd -r "$TEMPDIR" > "$TEMPDIR"/test6.output
 if ! cmp .travis/test6.answer "$TEMPDIR/test6.output" ; then
@@ -250,7 +256,7 @@ if ! cmp .travis/test6.answer "$TEMPDIR/test6.output" ; then
     exit 1
   else
     echo test6 passed
-  fi
+fi
 fi
 
 echo "All important tests passed, deleting the temporary directory at $TEMPDIR"
