@@ -1,27 +1,24 @@
-# Gophernicus
-
-This release: Version DEVEL
-NOTE: The master branch is rolling Development! DO NOT USE unless you want fiery dragons! (you probably want to `git checkout 3.1.1`)
-
+# Gophernicus (zcrayfish fork)
 *Copyright (c) 2009-2018 Kim Holviala*
-
 *Copyright (c) 2019 Gophernicus Developers*
 
 Gophernicus is a modern full-featured (and hopefully) secure gopher
-daemon. It is licensed under the BSD license.
+daemon. It is licensed under the BSD license. This is the zcrayfish fork.
+Main changes from gophernicus/gophernicus are:
+* Don't install a sample gophermap
+* Don't generate HTML, ever: no hURL hack here.
+* Gophertypes are closer to what Lynx, the most popular gopher client, supports
+* File magic expanded (so gophertypes are more likely to be properly assigned to files without extensions)
+* Code to work around UMN client bugs removed. This client needs to be fixed.
+* default width changed to 74
+* Automated testing to guard against broken builds (github workflows)
 
 (If you are looking for installation documentation, please see INSTALL.md).
 
 ## Support/Contact
 
-Developers can be reached at gophernicus AT gophernicus DOT org.
-
-Our IRC channel is on irc.libera.chat #gophernicus.
-
-You most likely want to subscribe to the gophernicus mailing list at
-https://lists.tildeverse.org/postorius/lists/gophernicus.lists.tildeverse.org/,
-especially if you maintain a server. This is where all important announcements
-are made.
+Just like the original gophernicus, the developers can also be found on the
+IRC channel at irc.libera.chat #gophernicus.
 
 ## Command line options
 
@@ -36,7 +33,7 @@ are made.
     -u userdir    Change users personal gopherspace  [public_gopher]
     -l logfile    Log to Apache-compatible combined format logfile
 
-    -w width      Change default page width          [67]
+    -w width      Change default page width          [74]
     -o charset    Change default output charset      [UTF-8]
 
     -s seconds    Session timeout in seconds         [1800]
