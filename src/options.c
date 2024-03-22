@@ -141,7 +141,6 @@ void parse_args(state *st, int argc, char *argv[])
 			case 'U': st->extra_unveil_paths = optarg; break;
 #endif
 			case 'n':
-				if (*optarg == 'v') { st->opt_vhost = FALSE; break; }
 				if (*optarg == 'l') { st->opt_parent = FALSE; break; }
 				if (*optarg == 'h') { st->opt_header = FALSE; break; }
 				if (*optarg == 'f') { st->opt_footer = FALSE; break; }
@@ -176,12 +175,6 @@ void parse_args(state *st, int argc, char *argv[])
 	if (st->out_width < MIN_WIDTH) st->out_width = MIN_WIDTH;
 	if (st->out_width < MIN_WIDTH + DATE_WIDTH) st->opt_date = FALSE;
 	if (!st->opt_syslog) st->debug = FALSE;
-
-	/* Primary vhost directory must exist or we disable vhosting */
-	if (st->opt_vhost) {
-		snprintf(buf, sizeof(buf), "%s/%s", st->server_root, st->server_host);
-		if (stat(buf, &file) == ERROR) st->opt_vhost = FALSE;
-	}
 
 	/* If -D arg looks like a file load the file contents */
 	if (*st->server_description == '/') {

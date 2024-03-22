@@ -65,11 +65,6 @@ void get_shm_session(state *st, shm_state *shm)
 
 	/* Get session id */
 	if ((i = get_shm_session_id(st, shm)) == ERROR) return;
-
-	/* Get session data */
-	if (st->opt_vhost) {
-		sstrlcpy(st->server_host, shm->session[i].server_host);
-	}
 }
 #endif
 

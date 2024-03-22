@@ -170,62 +170,6 @@ static void userlist(state *st)
 }
 #endif
 
-
-/*
- * Print a list of available virtual hosts
- */
-static void vhostlist(state *st)
-{
-	sdirent dir[MAX_SDIRENT];
-	struct tm *ltime;
-	char timestr[20];
-	char buf[BUFSIZE];
-	int width;
-	int num;
-	int i;
-
-	/* Scan the root dir for vhost dirs */
-	num = sortdir(st->server_root, dir, MAX_SDIRENT);
-	if (num < 0) die(st, ERR_NOTFOUND, "WTF?");
-
-	/* Width of filenames for fancy listing */
-	width = st->out_width - DATE_WIDTH - 15;
-
-	/* Loop through the directory entries */
-	for (i = 0; i < num; i++) {
-
-		/* Skip dotfiles */
-		if (dir[i].name[0] == '.') continue;
-
-		/* Require FQDN */
-		if (!strchr(dir[i].name, '.')) continue;
-
-		/* We only want world-readable directories */
-		if ((dir[i].mode & S_IROTH) == 0) continue;
-		if ((dir[i].mode & S_IFMT) != S_IFDIR) continue;
-
-		/* Generate display string for vhost */
-		snprintf(buf, sizeof(buf), VHOST_FORMAT, dir[i].name);
-
-		/* Fancy listing */
-		if (st->opt_date) {
-			ltime = localtime(&dir[i].mtime);
-			strftime(timestr, sizeof(timestr), DATE_FORMAT, ltime);
-
-			printf("1%-*.*s   %s		-  \t/;%s\t%s\t%i" CRLF,
-				width, width, buf, timestr, dir[i].name,
-				dir[i].name, st->server_port);
-		}
-
-		/* Teh boring version */
-		else {
-			printf("1%.*s\t/;%s\t%s\t%i" CRLF, st->out_width, buf,
-				dir[i].name, dir[i].name, st->server_port);
-		}
-	}
-}
-
-
 /*
  * Return gopher filetype for a file
  */
@@ -404,12 +348,6 @@ static int gophermap(state *st, char *mapfile, int depth)
 #ifdef HAVE_PASSWD
 			userlist(st);
 #endif
-			continue;
-		}
-
-		/* Print a list of available virtual hosts */
-		if (type == '%') {
-			if (st->opt_vhost) vhostlist(st);
 			continue;
 		}
 

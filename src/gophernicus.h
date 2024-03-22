@@ -264,7 +264,6 @@ size_t strlcat(char *dst, const char *src, size_t siz);
 #define DATE_LOCALE     "POSIX"
 
 #define USERDIR_FORMAT    "~%s", users[i].user    /* See man 3 getpwent */
-#define VHOST_FORMAT    "gopher://%s/"
 
 /* ISO-8859-1 to US-ASCII look-alike conversion table */
 #define ASCII \
@@ -365,7 +364,6 @@ typedef struct {
     char opt_syslog;
     char opt_magic;
     char opt_iconv;
-    char opt_vhost;
     char opt_query;
     char opt_caps;
     char opt_status;

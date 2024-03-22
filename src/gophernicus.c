@@ -239,47 +239,9 @@ static void selector_to_path(state *st)
 			die(st, ERR_ACCESS, "~/public_gopher not world-readable");
 		if (file.st_uid != pwd->pw_uid)
 			die(st, ERR_ACCESS, "~/ and ~/public_gopher owned by different users");
-
-		/* Userdirs always come from the default vhost */
-		if (st->opt_vhost)
-			sstrlcpy(st->server_host, st->server_host_default);
 		return;
 	}
 #endif
-
-	/* Virtual hosting */
-	if (st->opt_vhost) {
-
-		/* Try looking for the selector from the current vhost */
-		snprintf(st->req_realpath, sizeof(st->req_realpath), "%s/%s%s",
-			st->server_root, st->server_host, st->req_selector);
-		if (stat(st->req_realpath, &file) == OK) return;
-
-		/* Loop through all vhosts looking for the selector */
-		if ((dp = opendir(st->server_root)) == NULL)
-			die(st, st->req_selector, ERR_NOTFOUND);
-		while ((dir = readdir(dp))) {
-
-			/* Skip .hidden dirs and . & .. */
-			if (dir->d_name[0] == '.') continue;
-
-			/* Special case - skip lost+found (don't ask) */
-			if (sstrncmp(dir->d_name, "lost+found") == MATCH) continue;
-
-			/* Generate path to the found vhost */
-			snprintf(st->req_realpath, sizeof(st->req_realpath), "%s/%s%s",
-				st->server_root, dir->d_name, st->req_selector);
-
-			/* Did we find the selector under this vhost? */
-			if (stat(st->req_realpath, &file) == OK) {
-
-				/* Virtual host found - update state & return */
-				sstrlcpy(st->server_host, dir->d_name);
-				return;
-			}
-		}
-		closedir(dp);
-	}
 
 	/* Handle normal selectors */
 	snprintf(st->req_realpath, sizeof(st->req_realpath),
@@ -440,7 +402,6 @@ static void init_state(state *st)
 	st->session_max_hits = DEFAULT_SESSION_MAX_HITS;
 
 	/* Feature options */
-	st->opt_vhost = TRUE;
 	st->opt_parent = TRUE;
 	st->opt_header = TRUE;
 	st->opt_footer = TRUE;
@@ -708,12 +669,6 @@ get_selector:
 	/* Parse ?query from selector */
 	if (st.opt_query && (c = strchr(selector, '?'))) {
 		sstrlcpy(st.req_query_string, c + 1);
-		*c = '\0';
-	}
-
-	/* Parse ;vhost from selector */
-	if (st.opt_vhost && (c = strchr(selector, ';'))) {
-		sstrlcpy(st.server_host, c + 1);
 		*c = '\0';
 	}
 
