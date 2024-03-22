@@ -240,9 +240,7 @@ Examples:
 
 ## Session tracking and statistics
 
-To enable virtual hosting with gopher (RFC1436) clients Gophernicus
-tracks users and their session. As a side effect of that session
-tracking, Gophernicus has simple throttling controls to keep nasty
+Gophernicus has simple throttling controls to keep nasty
 users from killing your precious 120MHz PPC 604e server from dying
 under the load. The throttling defaults are high enough that normal
 human users will never hit the limits, but it's possible (and mostly
