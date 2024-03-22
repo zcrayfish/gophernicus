@@ -12,6 +12,7 @@ Main changes from gophernicus/gophernicus are:
 * Code to work around UMN client bugs removed. This client needs to be fixed.
 * default width changed to 74
 * Automated testing to guard against broken builds (github workflows)
+* vhost support removed. Use multiple IP (preferably IPv6) addresses if you need to run multiple sites.
 
 (If you are looking for installation documentation, please see INSTALL.md).
 
@@ -51,7 +52,6 @@ IRC channel at irc.libera.chat #gophernicus.
     -U paths      Specify a colon-separated list of extra unveil(2) paths
                   (OpenBSD only).
 
-    -nv           Disable virtual hosting
     -nl           Disable parent directory links
     -nh           Disable menu header (title)
     -nf           Disable menu footer
@@ -160,32 +160,6 @@ that directory.
 This is suppressed if the `-nu` option is given.
 In this case, any `~` entry which otherwise initiates listing
 of user directories will be displayed literally.
-
-## Virtual hosting
-
-Gophernicus supports virtual hosting, or serving more than one logical
-domain using the same IP address. Since gopher (RFC1436) doesn't
-support virtual hosting this requires some hacks.
-
-To enable virtual hosting create one or more directories under your
-gopher root which are named after your domain names. The primary vhost
-directory (set with the `-h HOSTNAME` option) must exist or virtual
-hosting will be disabled. Then simply add content to the hostname
-directories and you're (kind of) up and running.
-
-There is a serious issue with virtual hosting.
-
-As stated previously, RFC1436 dosen't support virtual hosting. Clients won't
-like it.
-
-How the virtual hosting works, is that it loops through the vhosts looking for
-the selector. As you might think, the root gophermap exists on all of the
-vhosts, meaning it might not use the correct vhost. There is currently no easy
-way to fix this.
-
-It is recommended to add '%' on a line by itself to the bottom of your root
-gophermaps. This will add "special" links of the format example.com/;example.com
-which forces the correct vhost.
 
 ## CGI support
 
