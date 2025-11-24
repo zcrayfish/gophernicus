@@ -236,21 +236,6 @@ if [ "${HOSTNAME}" = "autodetect" ]; then
 fi
 printf "%s\\n" "${HOSTNAME}"
 
-# Use libwrap when it is available
-printf "checking for libwrap... "
-cat > conftest.c <<EOF
-#include <tcpd.h>
-int main() {}
-EOF
-if ${CC} -o conftest -lwrap conftest.c 2>/dev/null; then
-    LIBWRAP="-DHAVE_LIBWRAP -lwrap"
-    printf "yes"
-else
-    LIBWRAP=
-    printf "no, but program will still work"
-fi
-printf "\\n"
-
 # Check and use SHM if available
 printf "checking for ipcrm (SHM management)... "
 if ! IPCRM="$(command -v ipcrm)"; then
@@ -287,7 +272,6 @@ cp Makefile.in Makefile
 printf "creating Makefile... "
 sed -i -e "s:@CC@:${CC}:" Makefile
 sed -i -e "s:@HOSTCC@:${HOSTCC}:" Makefile
-sed -i -e "s:@LIBWRAP@:${LIBWRAP}:" Makefile
 sed -i -e "s:@INSTALL@:${INSTALL}:" Makefile
 sed -i -e "s:@MAKE@:${MAKE}:" Makefile
 
