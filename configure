@@ -239,6 +239,21 @@ if [ "${HOSTNAME}" = "autodetect" ]; then
 fi
 printf "%s\\n" "${HOSTNAME}"
 
+# Checking for passwd support
+printf "checking for passwd support... "
+cat > conftest.c <<EOF
+#include <pwd.h>
+int main() {}
+EOF
+
+if ${CC} -o conftest conftest.c 2>/dev/null; then
+    echo "#define HAVE_PASSWD " >> config.h
+    printf "yes"
+else
+    printf "no"
+fi
+printf "\\n"
+
 # Check and use SHM if available
 printf "checking for ipcrm (SHM management)... "
 if ! IPCRM="$(command -v ipcrm)"; then
