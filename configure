@@ -64,6 +64,9 @@ done
 : ${CFLAGS:=-O2}
 : ${HOSTNAME:=autodetect}
 
+rm -f config.h
+touch config.h
+
 # Check for a compiler that actually works
 printf "checking for working compiler... "
 cat > conftest.c <<EOF
