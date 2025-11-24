@@ -285,6 +285,10 @@ static char *get_local_address(void)
 	}
 #endif
 
+	/* Are we a CGI script or running under nmap-ncat? */
+	if ((c = getenv("LOCAL_ADDR"))) return c;
+	if ((c = getenv("NCAT_LOCAL_ADDR"))) return c;
+
 	/* Nothing works... I'm out of ideas */
 	return UNKNOWN_ADDR;
 }
@@ -306,8 +310,9 @@ static char *get_peer_address(void)
 #endif
 	char *c;
 
-	/* Are we a CGI script? */
+	/* Are we a CGI script or running under nmap-ncat? */
 	if ((c = getenv("REMOTE_ADDR"))) return c;
+	if ((c = getenv("NCAT_REMOTE_ADDR"))) return c;
 	/* if ((c = getenv("REMOTE_HOST"))) return c; */
 
 	/* Try IPv4 first */
