@@ -53,7 +53,7 @@
 /* Defaults should fit standard POSIX systems */
 #define HAVE_IPv4        /* IPv4 should work anywhere */
 #define HAVE_IPv6        /* Requires modern POSIX */
-#define HAVE_PASSWD        /* For systems with passwd-like userdb */
+/* #define HAVE_PASSWD        autodetected, For systems with passwd-like userdb */
 #define PASSWD_MIN_UID 100    /* Minimum allowed UID for ~userdirs */
 #define HAVE_LOCALES        /* setlocale() and friends */
 #define HAVE_SHMEM        /* Shared memory support */
@@ -61,7 +61,8 @@
 #define HAVE_POPEN        /* popen() */
 #undef  HAVE_STRLCPY        /* strlcpy() from OpenBSD */
 #undef  HAVE_SENDFILE        /* sendfile() in Linux & others */
-/* #undef  HAVE_LIBWRAP           autodetected, don't enable here */
+
+#include "config.h"
 
 /* Linux */
 #ifdef __linux
@@ -148,10 +149,6 @@ size_t strlcpy(char *dst, const char *src, size_t siz);
 size_t strlcat(char *dst, const char *src, size_t siz);
 #endif
 
-#ifdef HAVE_LIBWRAP
-#include <tcpd.h>
-#endif
-
 /*
  * Compile-time configuration
  */
@@ -170,7 +167,6 @@ size_t strlcat(char *dst, const char *src, size_t siz);
 #define ERROR        -1
 
 #define MATCH        0
-#define WRAP_DENIED    0
 
 /* Gopher filetypes */
 #define TYPE_TEXT    '0'

@@ -36,7 +36,7 @@ SYSTEMD  = @SYSTEMD@
 
 CC      ?= @CC@
 HOSTCC  ?= @HOSTCC@
-CFLAGS  := -O2 -Wall @LIBWRAP@ $(CFLAGS)
+CFLAGS  := -O2 -Wall $(CFLAGS)
 LDFLAGS := $(LDFLAGS)
 
 IPCRM   ?= @IPCRM@

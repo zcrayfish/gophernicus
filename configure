@@ -64,6 +64,9 @@ done
 : ${CFLAGS:=-O2}
 : ${HOSTNAME:=autodetect}
 
+rm -f src/config.h
+touch src/config.h
+
 # Check for a compiler that actually works
 printf "checking for working compiler... "
 cat > conftest.c <<EOF
@@ -236,18 +239,18 @@ if [ "${HOSTNAME}" = "autodetect" ]; then
 fi
 printf "%s\\n" "${HOSTNAME}"
 
-# Use libwrap when it is available
-printf "checking for libwrap... "
+# Checking for passwd support
+printf "checking for passwd support... "
 cat > conftest.c <<EOF
-#include <tcpd.h>
+#include <pwd.h>
 int main() {}
 EOF
-if ${CC} -o conftest -lwrap conftest.c 2>/dev/null; then
-    LIBWRAP="-DHAVE_LIBWRAP -lwrap"
+
+if ${CC} -o conftest conftest.c 2>/dev/null; then
+    echo "#define HAVE_PASSWD " >> src/config.h
     printf "yes"
 else
-    LIBWRAP=
-    printf "no, but program will still work"
+    printf "no"
 fi
 printf "\\n"
 
@@ -287,7 +290,6 @@ cp Makefile.in Makefile
 printf "creating Makefile... "
 sed -i -e "s:@CC@:${CC}:" Makefile
 sed -i -e "s:@HOSTCC@:${HOSTCC}:" Makefile
-sed -i -e "s:@LIBWRAP@:${LIBWRAP}:" Makefile
 sed -i -e "s:@INSTALL@:${INSTALL}:" Makefile
 sed -i -e "s:@MAKE@:${MAKE}:" Makefile
 
