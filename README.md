@@ -207,20 +207,14 @@ gopher protocol doesn't have.
 ## Charset support and conversions
 
 Gophernicus supports three charsets: US-ASCII, ISO-8859-1 and UTF-8.
-All textual input is internally upconverted to UTF-8 and then
-downconverted to whatever charset the client is asking for. The
-conversion is input autosensing which means that you don't have to
-specify your filesystem charset, or the charset of your text files -
-it's all detected automatically.
+All textual input is internally upconverted to UTF-8. The conversion
+is input autosensing which means that you don't have to specify your
+filesystem charset, or the charset of your text files - it's all
+detected automatically.
 
-With standard gopher clients this is a bit of a problem as your text
-files WILL be converted to 7-bit US-ASCII. This means that all 8-bit
-charaters WILL BE LOST. This decision was made because no gopher
-client that I tested was reliably cabable of decoding anything else
-than pure US-ASCII. If you want to disable the conversion use the
-`-no` option, or if you'd like to change the default output charset to
-something else than US-ASCII just use for example the `-o ISO-8859-1`
-option.
+If you want to disable the conversion use the `-no` option, or if
+you'd like to change the default output charset to something other
+than UTF-8 just use for example the `-o ISO-8859-1` option.
 
 ## Selector rewriting
 
