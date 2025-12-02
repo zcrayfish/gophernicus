@@ -106,23 +106,8 @@ else
    echo test2 round4 passed
 fi
 
-#test 3 test a non-existant GIF
-printf "/FAKE.GIF\n" | src/gophernicus -h test.invalid -nf -nu -nv -nx -nf -nd -nr -r "$TEMPDIR" > "$TEMPDIR"/test3.output
-if ! cmp .travis/test3.answer "$TEMPDIR/test3.output" ; then
-    echo "test3 round1 FAILED, test info saved at $TEMPDIR, diff not displayed (binary files expected)"
-    exit 1
-else
-   echo test3 round1 passed
-fi
-
-#test 3 test a non-existant GIF
-printf "/FAKE.GIF\r\n" | src/gophernicus -h test.invalid -nf -nu -nv -nx -nf -nd -nr -r "$TEMPDIR" > "$TEMPDIR"/test3.output
-if ! cmp .travis/test3.answer "$TEMPDIR/test3.output" ; then
-    echo "test3 round2 FAILED, test info saved at $TEMPDIR, diff not displayed (binary files expected)"
-    exit 1
-else
-   echo test3 round2 passed
-fi
+#test 3 was to test non-existant GIFs, this feature has been removed from the zcrayfish fork
+echo test3  passed
 
 #test 4 test file extensions
 mkdir -p "$TEMPDIR"/extensions
@@ -184,8 +169,6 @@ echo 'fLaC' > "$TEMPDIR"/magic/flac
 echo 'MThd' > "$TEMPDIR"/magic/midi
 echo 'ID3' > "$TEMPDIR"/magic/mp3id3
 printf '\032\105\337\243' > "$TEMPDIR"/magic/matroska
-printf '\000\000\001\272' > "$TEMPDIR"/magic/mpeg
-printf '\000\000\001\263' > "$TEMPDIR"/magic/anothermpeg
 echo 'begin 644 fake.file' > "$TEMPDIR"/magic/uuencode
 printf 'begin-base64 644 fake.file\nCg==\n====' > "$TEMPDIR"/magic/uuencodeb64
 echo 'This is a plain text file I guess' > "$TEMPDIR"/magic/unknown
