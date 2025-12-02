@@ -76,9 +76,7 @@ void footer(state *st)
 	char msg[BUFSIZE];
 
 	if (!st->opt_footer) {
-#ifndef ENABLE_STRICT_RFC1436
 		if (st->req_filetype == TYPE_MENU || st->req_filetype == TYPE_QUERY)
-#endif
 			printf("." CRLF);
 		return;
 	}
@@ -101,9 +99,6 @@ void footer(state *st)
 	else {
 		printf("%s" CRLF, line);
 		printf("%s" CRLF, msg);
-#ifdef ENABLE_STRICT_RFC1436
-		printf("." CRLF);
-#endif
 	}
 }
 
@@ -112,7 +107,6 @@ void footer(state *st)
  */
 void die(state *st, const char *message, const char *description)
 {
-	static const char error_gif[] = ERROR_GIF;
 
 	log_fatal("error \"%s %s\" for request \"%s\" from %s",
 	          message, description ? description : "",
@@ -124,23 +118,19 @@ void die(state *st, const char *message, const char *description)
 	if (st->req_filetype == TYPE_MENU || st->req_filetype == TYPE_QUERY) {
 		printf("3" ERROR_PREFIX "%s %s\tTITLE\t" DUMMY_HOST CRLF, message, description);
 		footer(st);
-	}
-
-	/* Handle image errors */
-	else if (st->req_filetype == TYPE_GIF || st->req_filetype == TYPE_IMAGE) {
-		fwrite(error_gif, sizeof(error_gif), 1, stdout);
+		printf("." CRLF);
 	}
 
 	/* Use plain text error for other filetypes */
 	else {
 		printf(ERROR_PREFIX "%s %s" CRLF, message, description);
 		footer(st);
+		printf("." CRLF);
 	}
 
 	/* Quit */
 	exit(EXIT_FAILURE);
 }
-
 
 /*
  * Apache-compatible combined logging
@@ -174,7 +164,6 @@ void log_combined(state *st, int status)
 		st->req_referrer);
 	fclose(fp);
 }
-
 
 /*
  * Convert gopher selector to an absolute path
@@ -247,7 +236,6 @@ static void selector_to_path(state *st)
 	snprintf(st->req_realpath, sizeof(st->req_realpath),
 		"%s%s", st->server_root, st->req_selector);
 }
-
 
 /*
  * Get local IP address
