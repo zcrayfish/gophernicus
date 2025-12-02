@@ -213,9 +213,14 @@ char gopher_filetype(state *st, char *file, char magic)
 	/* PNG images */
 	if (sstrncmp(buf, "\211PNG") == MATCH) return TYPE_IMAGE;
 
+	/* XPM image */                                                                                                                                                          
+	if (sstrncmp(buf, "/* XPM */") == MATCH) return TYPE_IMAGE;
+	
 	/* TIFF images */
 	if (sstrncmp(buf, "\111\111\052\000") == MATCH) return TYPE_GOPHERPLUS_IMAGE;
 	if (sstrncmp(buf, "\115\155\000\052") == MATCH) return TYPE_GOPHERPLUS_IMAGE;
+	if (sstrncmp(buf, "\111\111\053\000") == MATCH) return TYPE_GOPHERPLUS_IMAGE;
+	if (sstrncmp(buf, "\115\155\000\053") == MATCH) return TYPE_GOPHERPLUS_IMAGE;
 
 	/* mbox */
 	if (strstr(buf, "\nFrom: ") &&
@@ -224,34 +229,43 @@ char gopher_filetype(state *st, char *file, char magic)
 	/* MIME */
 	if (strstr(buf, "\nContent-Type: ")) return TYPE_MIME;
 
-	/* HTML or XML files (7 or 8 bit without BOM) */
+	/* HTML, SGML, XHTML, or XML files (7 or 8 bit without BOM) */
 	if (buf[0] == '<' &&
 		(strstr(buf, "<html") ||
 		 strstr(buf, "<HTML") ||
+		 strstr(buf, "<DOCTYPE ") ||
+		 strstr(buf, "<DocType") ||
+		 strstr(buf, "<doctype") ||
 		 strstr(buf, "<?xml "))) return TYPE_HTML;
 
-	/* PDF and PostScript */
+	/* PDF, PostScript, and EPS */
 	if (sstrncmp(buf, "%PDF-") == MATCH ||
-		sstrncmp(buf, "%!") == MATCH) return TYPE_PDF;
+		sstrncmp(buf, "%!PS") == MATCH) return TYPE_PDF;
 
 	/* compress and gzip */
 	if (sstrncmp(buf, "\037\235\220") == MATCH ||
 		sstrncmp(buf, "\037\213\010") == MATCH) return TYPE_GZIP;
+	if (sstrncmp(buf, "\037\240") == MATCH) return TYPE_GZIP;
+	/* bz2 */
+	if (sstrncmp(buf, "BZh") == MATCH) return TYPE_GZIP;
+	/* rar */
+	if (sstrncmp(buf, "\122\141\162\041\032\007") == MATCH) return TYPE_GZIP;
 
 	/* Some audio formats */
 	/* FLAC */
 	if (sstrncmp(buf, "fLaC") == MATCH) return TYPE_SOUND;
 	/* MIDI */
 	if (sstrncmp(buf, "MThd") == MATCH) return TYPE_SOUND;
-	/* MP3s with ID3 header */
+	/* MP3s with ID3v2 header */
 	if (sstrncmp(buf, "ID3") == MATCH) return TYPE_SOUND;
-
+	/* MP3s without header */
+	if (sstrncmp(buf, "\377\373") == MATCH) return TYPE_SOUND;
+	if (sstrncmp(buf, "\377\363") == MATCH) return TYPE_SOUND;
+	if (sstrncmp(buf, "\377\362") == MATCH) return TYPE_SOUND;
+	
 	/* Some video formats */
 	/* matroska */
 	if (sstrncmp(buf, "\032\105\337\243") == MATCH) return TYPE_GOPHERPLUS_MOVIE;
-	/* mpeg1 and mpeg2 video */
-	if (sstrncmp(buf, "\000\000\001\272") == MATCH) return TYPE_GOPHERPLUS_MOVIE;
-	if (sstrncmp(buf, "\000\000\001\263") == MATCH) return TYPE_GOPHERPLUS_MOVIE;
 
 	/* UUENCODED file; we only look for ones that are user readable, otherwise assume nonsense */
 	if (sstrncmp(buf, "begin ") == MATCH) return TYPE_UUENCODED;

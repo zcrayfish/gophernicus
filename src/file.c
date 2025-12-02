@@ -26,7 +26,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 #include "gophernicus.h"
 
 
@@ -87,17 +86,10 @@ void send_text_file(state *st)
 
 		chomp(out);
 
-#ifdef ENABLE_STRICT_RFC1436
-		if (strcmp(out, ".") == MATCH) printf(".." CRLF);
-		else
-#endif
 		printf("%s" CRLF, out);
 		line++;
 	}
 
-#ifdef ENABLE_STRICT_RFC1436
-	printf("." CRLF);
-#endif
 	fclose(fp);
 }
 
