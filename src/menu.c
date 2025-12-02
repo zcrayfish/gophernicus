@@ -264,13 +264,16 @@ char gopher_filetype(state *st, char *file, char magic)
 	if (sstrncmp(buf, "\377\362") == MATCH) return TYPE_SOUND;
 	
 	/* Some video formats */
-	/* matroska */
+	/* matroska/webm */
 	if (sstrncmp(buf, "\032\105\337\243") == MATCH) return TYPE_GOPHERPLUS_MOVIE;
 
 	/* UUENCODED file; we only look for ones that are user readable, otherwise assume nonsense */
 	if (sstrncmp(buf, "begin ") == MATCH) return TYPE_UUENCODED;
 	if (sstrncmp(buf, "begin-base64 ") == MATCH) return TYPE_UUENCODED;
 
+	/* BINHEX4 file */
+	if (sstrncmp(buf, "(This file must be converted with BinHex") == MATCH) return TYPE_BINHEX4;
+	
 	/* Unknown content - binary or text? */
 	if (memchr(buf, '\0', i)) return TYPE_BINARY;
 	return st->default_filetype;

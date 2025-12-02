@@ -171,6 +171,7 @@ size_t strlcat(char *dst, const char *src, size_t siz);
 #define TYPE_TEXT    '0'
 #define TYPE_MENU    '1'
 #define TYPE_ERROR    '3'
+#define TYPE_BINHEX4    '4'	
 #define TYPE_GZIP    '5'
 #define TYPE_UUENCODED  '6'
 #define TYPE_QUERY    '7'
