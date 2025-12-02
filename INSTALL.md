@@ -5,41 +5,37 @@ from standard LIBC ones. Care has been taken to use only
 standard POSIX syscalls so that it should work pretty much on
 any \*nix system.
 
-Please make sure that you checkout to the correct version you want.
-Currently, you most likely want version 3.1.1.
-
 To compile and install run:
 
 ```
-$ git clone -b 3.1.1 https://github.com/gophernicus/gophernicus.git
+$ git clone https://github.com/zcrayfish/gophernicus.git
 $ cd gophernicus
 $ ./configure --listener=somelistener
 $ make
+$ make check
 $ sudo make install
 ```
 
 Important configure arguments include:
 
-- `--listener`. This is the only required argument. You must
-  choose a listener that passes network requests to
-  gophernicus, as gophernicus doesn't do this by itself. The
-  options are:
-  - systemd, a common init system on many Linux distributions
+- `--listener`. If you want `make install` to attempt to
+ setup the listener for you, you must choose a listener that
+ passes network requests to gophernicus, as gophernicus doesn't
+ do this by itself. The options are:
+  - systemd, a common init system on many GNU/Linux distributions
     that can do this without an external program.
   - inetd, an older, well-known implementation that is very
-    simple.
-  - xinetd, a modern reimplementation of inetd using specific
-    config files.
+    simple. This does not work for busybox inetd.
+  - xinetd, a reimplementation of inetd using specific config files.
   - mac, to be used on Mac OSX machines.
   - haiku, to be used on Haiku machines.
+  - none, you will manually setup the listener yourself (e.g. ncat, busybox inetd, tcpsvd)
   - autodetect, which looks at what you have available
-    (unrecommended, please manually specify where possible).
+    (not recommended, please manually specify where possible).
 - `--hostname`. This is by default attempted to be autodetected
   by the configure script, using the command `hostname`. It is
-  expected to be the publicly-accessible address of the server.
-  However, this might be completely wrong, especially on your
-  personal machine at home or on some cheap VPS. If you know you
-  have a fixed numerical IP, you can also directly use that.
+  expected to be the publicly-accessible fully qualified domain name (FQDN) of the server.
+  However, this detection fails more often than not.
   For testing, just keep the default value of `localhost` which will
   result in selectors working only when you're connecting locally.
 - `--gopherroot`. The location in which your gopher server will
@@ -49,29 +45,6 @@ Important configure arguments include:
 That's it - Gophernicus should now be installed, preconfigured
 and running under gopher://<HOSTNAME>/. And more often than not,
 It Just Works(tm).
-
-## Compiling with TCP wrappers
-
-Gophernicus uses no extra libraries... well... except libwrap
-(TCP wrappers) if it is installed with headers in default Unix
-directories at the time of compiling. If you have the headers
-installed and don't want wrapper support, too bad (for now, see
-issue #89).
-
-For configuring IP access lists with TCP wrappers, take a look
-at the files `/etc/hosts.allow` and `/etc/hosts.deny` (because the
-manual pages suck). Use the daemon name "gophernicus" to
-make your access lists.
-
-## Distributions
-
-### Debian (and -based) (including Ubuntu) distributions
-
-We used to distribute a `debian/` directory for people to `make
-deb` and then install a deb. However, thanks to the work of
-Ryan Kavanagh, gophernicus will be distributed in the official
-debian repositories in the next stable release! In the interim,
-either keep using the old version or install without deb.
 
 ## Cross-compiling
 
