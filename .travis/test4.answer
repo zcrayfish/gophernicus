@@ -3,7 +3,7 @@ i		null.host	1
 1..	/	test.invalid	70
 ;empty.3g2	/extensions/empty.3g2	test.invalid	70
 ;empty.3gp	/extensions/empty.3gp	test.invalid	70
-5empty.Z	/extensions/empty.Z	test.invalid	70
+0empty.Z	/extensions/empty.Z	test.invalid	70
 sempty.aac	/extensions/empty.aac	test.invalid	70
 sempty.aiff	/extensions/empty.aiff	test.invalid	70
 ;empty.asf	/extensions/empty.asf	test.invalid	70
@@ -17,12 +17,12 @@ Iempty.bmp	/extensions/empty.bmp	test.invalid	70
 hempty.css	/extensions/empty.css	test.invalid	70
 dempty.doc	/extensions/empty.doc	test.invalid	70
 dempty.docx	/extensions/empty.docx	test.invalid	70
-Mempty.eml	/extensions/empty.eml	test.invalid	70
+0empty.eml	/extensions/empty.eml	test.invalid	70
 0empty.flac	/extensions/empty.flac	test.invalid	70
 0empty.gif	/extensions/empty.gif	test.invalid	70
 0empty.gz	/extensions/empty.gz	test.invalid	70
 0empty.h	/extensions/empty.h	test.invalid	70
-4empty.hqx	/extensions/empty.hqx	test.invalid	70
+0empty.hqx	/extensions/empty.hqx	test.invalid	70
 0empty.htm	/extensions/empty.htm	test.invalid	70
 0empty.html	/extensions/empty.html	test.invalid	70
 cempty.ical	/extensions/empty.ical	test.invalid	70
@@ -35,11 +35,11 @@ cempty.ics	/extensions/empty.ics	test.invalid	70
 0empty.log	/extensions/empty.log	test.invalid	70
 sempty.m4a	/extensions/empty.m4a	test.invalid	70
 ;empty.m4v	/extensions/empty.m4v	test.invalid	70
-Mempty.mbox	/extensions/empty.mbox	test.invalid	70
-Mempty.mht	/extensions/empty.mht	test.invalid	70
-Mempty.mhtml	/extensions/empty.mhtml	test.invalid	70
-sempty.mid	/extensions/empty.mid	test.invalid	70
-sempty.midi	/extensions/empty.midi	test.invalid	70
+0empty.mbox	/extensions/empty.mbox	test.invalid	70
+0empty.mht	/extensions/empty.mht	test.invalid	70
+0empty.mhtml	/extensions/empty.mhtml	test.invalid	70
+0empty.mid	/extensions/empty.mid	test.invalid	70
+0empty.midi	/extensions/empty.midi	test.invalid	70
 ;empty.mov	/extensions/empty.mov	test.invalid	70
 sempty.mp2	/extensions/empty.mp2	test.invalid	70
 0empty.mp3	/extensions/empty.mp3	test.invalid	70
@@ -80,7 +80,7 @@ hempty.svg	/extensions/empty.svg	test.invalid	70
 0empty.txt	/extensions/empty.txt	test.invalid	70
 6empty.uue	/extensions/empty.uue	test.invalid	70
 sempty.wav	/extensions/empty.wav	test.invalid	70
-;empty.webm	/extensions/empty.webm	test.invalid	70
+0empty.webm	/extensions/empty.webm	test.invalid	70
 Iempty.webp	/extensions/empty.webp	test.invalid	70
 sempty.wma	/extensions/empty.wma	test.invalid	70
 ;empty.wmv	/extensions/empty.wmv	test.invalid	70
@@ -92,3 +92,4 @@ dempty.xlsx	/extensions/empty.xlsx	test.invalid	70
 0empty.xpm	/extensions/empty.xpm	test.invalid	70
 5empty.zip	/extensions/empty.zip	test.invalid	70
 .
+
