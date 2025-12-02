@@ -1,7 +1,6 @@
 i[/magic/]	TITLE	null.host	1
 i		null.host	1
 1..	/	test.invalid	70
-;anothermpeg	/magic/anothermpeg	test.invalid	70
 Iciff	/magic/ciff	test.invalid	70
 Iexif	/magic/exif	test.invalid	70
 sflac	/magic/flac	test.invalid	70
@@ -16,7 +15,6 @@ Ijfif	/magic/jfif	test.invalid	70
 smidi	/magic/midi	test.invalid	70
 Mmime	/magic/mime	test.invalid	70
 smp3id3	/magic/mp3id3	test.invalid	70
-;mpeg	/magic/mpeg	test.invalid	70
 Ipng	/magic/png	test.invalid	70
 Ispiff	/magic/spiff	test.invalid	70
 :tiffbe	/magic/tiffbe	test.invalid	70
