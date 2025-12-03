@@ -217,10 +217,10 @@ char gopher_filetype(state *st, char *file, char magic)
 	if (sstrncmp(buf, "/* XPM */") == MATCH) return TYPE_IMAGE;
 	
 	/* TIFF images */
-	if (sstrncmp(buf, "\111\111\052\000") == MATCH) return TYPE_GOPHERPLUS_IMAGE;
-	if (sstrncmp(buf, "\115\155\000\052") == MATCH) return TYPE_GOPHERPLUS_IMAGE;
-	if (sstrncmp(buf, "\111\111\053\000") == MATCH) return TYPE_GOPHERPLUS_IMAGE;
-	if (sstrncmp(buf, "\115\155\000\053") == MATCH) return TYPE_GOPHERPLUS_IMAGE;
+	if (memcmp(buf, "\111\111\052\0") == MATCH) return TYPE_GOPHERPLUS_IMAGE;
+	if (memcmp(buf, "\111\111\053\0") == MATCH) return TYPE_GOPHERPLUS_IMAGE;
+	if (memcmp(buf, "\115\155\0\052", 4) == MATCH) return TYPE_GOPHERPLUS_IMAGE;
+	if (memcmp(buf, "\115\155\0\053", 4) == MATCH) return TYPE_GOPHERPLUS_IMAGE;
 
 	/* mbox */
 	if (strstr(buf, "\nFrom: ") &&
@@ -231,12 +231,9 @@ char gopher_filetype(state *st, char *file, char magic)
 
 	/* HTML, SGML, XHTML, or XML files (7 or 8 bit without BOM) */
 	if (buf[0] == '<' &&
-		(strstr(buf, "<html") ||
-		 strstr(buf, "<HTML") ||
-		 strstr(buf, "<DOCTYPE ") ||
-		 strstr(buf, "<DocType") ||
-		 strstr(buf, "<doctype") ||
-		 strstr(buf, "<?xml "))) return TYPE_HTML;
+		(sstrncasecmp(buf, "<html") ||
+		 sstrncasecmp(buf, "<DOCTYPE ") ||
+		 sstrncasecmp(buf, "<?xml "))) return TYPE_HTML;
 
 	/* PDF, PostScript, and EPS */
 	if (sstrncmp(buf, "%PDF-") == MATCH ||
@@ -267,8 +264,8 @@ char gopher_filetype(state *st, char *file, char magic)
 	/* matroska/webm */
 	if (sstrncmp(buf, "\032\105\337\243") == MATCH) return TYPE_GOPHERPLUS_MOVIE;
 	/* MPEG1 and MPEG2 video containers */
-	if (memcmp(buf, "\0\0\1\xBA", 8) == MATCH) return TYPE_GOPHERPLUS_MOVIE;
-	if (memcmp(buf, "\0\0\1\xBA", 8) == MATCH) return TYPE_GOPHERPLUS_MOVIE;
+	if (memcmp(buf, "\0\0\1\xBA", 4) == MATCH) return TYPE_GOPHERPLUS_MOVIE;
+	if (memcmp(buf, "\0\0\1\xBA", 4) == MATCH) return TYPE_GOPHERPLUS_MOVIE;
 	/* MP4 container 20, 24, 32, 64 bit; matches many video/audio types */
 	if (memcmp(buf, "\0\0\0\x14\x66\x74\x79\x70", 8) == MATCH) return TYPE_GOPHERPLUS_MOVIE;
 	if (memcmp(buf, "\0\0\0\x18\x66\x74\x79\x70", 8) == MATCH) return TYPE_GOPHERPLUS_MOVIE;
