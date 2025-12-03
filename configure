@@ -273,7 +273,10 @@ printf "\\n"
 
 # Trying to autodetect make
 printf "checking for make... "
-if ! MAKE="$(command -v make)"; then
+if MAKE="$(command -v bmake)"; then
+    MAKE="bmake"
+    printf "%s" "${MAKE}"   
+elif ! MAKE="$(command -v make)"; then 
     printf "not found, please pass MAKE=/path/to/make to make invocation"
     MAKE="make"
 else
