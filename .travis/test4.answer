@@ -1,8 +1,8 @@
 i[/extensions/]	TITLE	null.host	1
 i		null.host	1
 1..	/	test.invalid	70
-;empty.3g2	/extensions/empty.3g2	test.invalid	70
-;empty.3gp	/extensions/empty.3gp	test.invalid	70
+0empty.3g2	/extensions/empty.3g2	test.invalid	70
+0empty.3gp	/extensions/empty.3gp	test.invalid	70
 0empty.Z	/extensions/empty.Z	test.invalid	70
 sempty.aac	/extensions/empty.aac	test.invalid	70
 sempty.aiff	/extensions/empty.aiff	test.invalid	70
@@ -43,9 +43,9 @@ sempty.m4a	/extensions/empty.m4a	test.invalid	70
 ;empty.mov	/extensions/empty.mov	test.invalid	70
 sempty.mp2	/extensions/empty.mp2	test.invalid	70
 0empty.mp3	/extensions/empty.mp3	test.invalid	70
-;empty.mp4	/extensions/empty.mp4	test.invalid	70
-;empty.mpg	/extensions/empty.mpg	test.invalid	70
-;empty.mpv	/extensions/empty.mpv	test.invalid	70
+0empty.mp4	/extensions/empty.mp4	test.invalid	70
+0empty.mpg	/extensions/empty.mpg	test.invalid	70
+0empty.mpv	/extensions/empty.mpv	test.invalid	70
 9empty.o	/extensions/empty.o	test.invalid	70
 sempty.ogg	/extensions/empty.ogg	test.invalid	70
 ;empty.ogv	/extensions/empty.ogv	test.invalid	70
