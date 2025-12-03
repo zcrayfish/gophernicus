@@ -34,7 +34,7 @@ cempty.ics	/extensions/empty.ics	test.invalid	70
 0empty.jpg	/extensions/empty.jpg	test.invalid	70
 0empty.log	/extensions/empty.log	test.invalid	70
 sempty.m4a	/extensions/empty.m4a	test.invalid	70
-;empty.m4v	/extensions/empty.m4v	test.invalid	70
+0empty.m4v	/extensions/empty.m4v	test.invalid	70
 0empty.mbox	/extensions/empty.mbox	test.invalid	70
 0empty.mht	/extensions/empty.mht	test.invalid	70
 0empty.mhtml	/extensions/empty.mhtml	test.invalid	70
@@ -92,3 +92,4 @@ dempty.xlsx	/extensions/empty.xlsx	test.invalid	70
 0empty.xpm	/extensions/empty.xpm	test.invalid	70
 5empty.zip	/extensions/empty.zip	test.invalid	70
 .
+
