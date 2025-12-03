@@ -47,22 +47,22 @@ while [ "$#" -gt 0 ] ; do
 done
 
 # Set default values
-: ${PREFIX:=/usr/local}
-: ${BINDIR:=${PREFIX}/bin}
-: ${SBINDIR:=${PREFIX}/sbin}
-: ${DOCDIR:=${PREFIX}/share/doc}
-: ${MANDIR:=${PREFIX}/share/man}
-: ${MAN8DIR:=${MANDIR}/man8}
-: ${GOPHERROOT:=/var/gopher}
-: ${SYSCONFIG:=/etc/sysconfig}
-: ${DEFAULTCONF:=/etc/default}
-: ${LAUNCHD:=/Library/LaunchDaemons}
-: ${HAIKUSRV:=/boot/common/settings/network/services}
-: ${SYSTEMD:=/lib/systemd/system}
-: ${CC:=cc}
-: ${HOSTCC:=${CC}}
-: ${CFLAGS:=-O2}
-: ${HOSTNAME:=autodetect}
+: "${PREFIX:=/usr/local}"
+: "${BINDIR:=${PREFIX}/bin}"
+: "${SBINDIR:=${PREFIX}/sbin}"
+: "${DOCDIR:=${PREFIX}/share/doc}"
+: "${MANDIR:=${PREFIX}/share/man}"
+: "${MAN8DIR:=${MANDIR}/man8}"
+: "${GOPHERROOT:=/var/gopher}"
+: "${SYSCONFIG:=/etc/sysconfig}"
+: "${DEFAULTCONF:=/etc/default}"
+: "${LAUNCHD:=/Library/LaunchDaemons}"
+: "${HAIKUSRV:=/boot/common/settings/network/services}"
+: "${SYSTEMD:=/lib/systemd/system}"
+: "${CC:=cc}"
+: "${HOSTCC:=${CC}}"
+: "${CFLAGS:=-O2}"
+: "${HOSTNAME:=autodetect}"
 
 rm -f src/config.h
 touch src/config.h
@@ -77,7 +77,7 @@ if ! ${CC} -o conftest conftest.c; then
     printf "no\\n"
     exit 1
 else
-    printf "${CC}\\n"
+    printf '%s\n' "${CC}"
 fi
 
 # Autodetect the OS
@@ -116,15 +116,17 @@ else
     # Check it has required features (*cough* macos)
     mkdir testconf
     touch testfile
+    # shellcheck disable=SC2069
     ${INSTALL} -t testconf testfile 2>&1 >/dev/null || INSTALL=build-aux/install-sh
     rm testconf/testfile
+    # shellcheck disable=SC2069
     ${INSTALL} -T testfile testconf/testfile 2>&1 >/dev/null || INSTALL=build-aux/install-sh
     rm -r testconf testfile
     printf "%s" "${INSTALL}"
 fi
 printf "\\n"
 
-listeners="$(echo ${LISTENERS} | tr ',' ' ')"
+listeners=$(echo "${LISTENERS}" | tr ',' ' ')
 for listener in ${listeners}; do
     # Check for listener validity and autodetect if required
     # Checks that take place:
@@ -155,6 +157,8 @@ for listener in ${listeners}; do
                 listener=haiku
                 printf "haiku\\n"
                 break ;;
+	    *)
+		break ;;
         esac
 
         if [ -d "/lib/systemd/system" ] ; then
@@ -169,7 +173,7 @@ for listener in ${listeners}; do
         fi
 
         printf "checking for xinetd... "
-        if XINETD="$(command -v xinetd)" && [ "${listener}" = "autodetect" ]; then
+        if command -v xinetd && [ "${listener}" = "autodetect" ]; then
             listener=xinetd
             printf "xinetd\\n"
         fi
@@ -194,14 +198,16 @@ for listener in ${listeners}; do
         systemd)
             INSTALL_SYSTEMD="install-systemd"
             UNINSTALL_SYSTEMD="uninstall-systemd"
+            # shellcheck disable=SC2016
             INSTALL_MSG_SYSTEMD='$(MAKE) install-msg-systemd' ;;
         xinetd)
             INSTALL_XINETD="install-xinetd"
             UNINSTALL_XINETD="uninstall-xinetd"
             XINETD_CONF="/etc/xinetd.d/gophernicus"
+            # shellcheck disable=SC2016
             INSTALL_MSG_XINETD='$(MAKE) install-msg-xinetd' ;;
         inetd)
-            INSTALL_INETD="install-inetd"
+            #INSTALL_INETD="install-inetd"
             INETD_CONF="/etc/inetd.conf"
             printf "checking for update-inetd... "
             if ! UPDATE_INETD="$(command -v update-inetd)"; then
@@ -213,15 +219,18 @@ for listener in ${listeners}; do
                 INSTALL_INETD_UPDATE="install-inetd-update"
                 UNINSTALL_INETD_UPDATE="uninstall-inetd-update"
             fi
+            # shellcheck disable=SC2016
             INSTALL_MSG_INETD='$(MAKE) install-msg-inetd'
             ;;
         mac)
             INSTALL_OSX="install-osx"
             UNINSTALL_OSX="uninstall-osx"
+            # shellcheck disable=SC2016
             INSTALL_MSG_OSX='$(MAKE) install-msg-osx' ;;
         haiku)
             INSTALL_HAIKU="install-haiku"
             UNINSTALL_HAIKU="uninstall-haiku"
+            # shellcheck disable=SC2016
             INSTALL_MSG_HAIKU='$(MAKE) install-msg-haiku' ;;
         *) printf "The listener %s is not offically supported; continuing anyway.\\n" "${listener}" ;;
     esac
@@ -230,9 +239,7 @@ done
 # Try to detect hostname
 printf "checking current hostname... "
 if [ "${HOSTNAME}" = "autodetect" ]; then
-    HOSTNAME="$(hostname)"
-    # If no hostname then we couldn't autodetect
-    if [ $? != 0 ] || [ -z "${HOSTNAME}" ]; then
+    HOSTNAME="$(uname -n)" || HOSTNAME="$(hostname -f)" || if [ -z "${HOSTNAME}" ]; then
         printf "unable to detect hostname\\n"
         exit 1
     fi
@@ -325,6 +332,7 @@ sed -i -e "s:@INSTALL_MSG_SYSTEMD@:${INSTALL_MSG_SYSTEMD}:" Makefile
 sed -i -e "s:@INSTALL_MSG_OSX@:${INSTALL_MSG_OSX}:" Makefile
 sed -i -e "s:@INSTALL_MSG_HAIKU@:${INSTALL_MSG_HAIKU}:" Makefile
 sed -i -e "s:@UNINSTALL_OSX@:${UNINSTALL_OSX}:" Makefile
+# shellcheck disable=SC2153,SC2154
 sed -i -e "s:@UNINSTALL_INETD_MANUAL@:${UNINSTALL_INETD_MANUAL}:" Makefile
 sed -i -e "s:@UNINSTALL_INETD_UPDATE@:${UNINSTALL_INETD_UPDATE}:" Makefile
 sed -i -e "s:@UNINSTALL_XINETD@:${UNINSTALL_XINETD}:" Makefile
@@ -340,7 +348,7 @@ printf "done\\n"
 # use them, its just easier)
 for f in gophernicus.env haiku_snippet org.gophernicus.server.plist \
     gophernicus.xinetd; do
-    printf "creating init/${f}... "
+    printf '%s' "creating init/${f}... "
     sed -e "s:@HOSTNAME@:${HOSTNAME}:" "init/${f}.in" > "init/${f}"
     printf "done\\n"
 done
@@ -354,3 +362,4 @@ printf "done\\n"
 
 # Cleanup
 rm -f conftest conftest.c
+

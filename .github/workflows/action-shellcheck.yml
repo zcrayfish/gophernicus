@@ -1,9 +1,14 @@
+name: Shellcheck
+
 on:
   push:
-    branch:
-      - main
+    # test this branch and staged PRs based on this branch code
+    branches: [ "main", "auto" ]
 
-name: 'Trigger: Push action'
+  pull_request:
+    # test PRs targeting this branch code
+    branches: [ "main" ]
+
 
 jobs:
   shellcheck:
@@ -14,6 +19,6 @@ jobs:
     - name: Run ShellCheck
       uses: ludeeus/action-shellcheck@master
       with:
-        ignore_paths: ./configure ./build-aux/install-sh
+        ignore_paths: ./build-aux/install-sh
       env:
-        SHELLCHECK_OPTS:
+        SHELLCHECK_OPTS: -o all
