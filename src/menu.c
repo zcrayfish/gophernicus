@@ -217,8 +217,8 @@ char gopher_filetype(state *st, char *file, char magic)
 	if (sstrncmp(buf, "/* XPM */") == MATCH) return TYPE_IMAGE;
 	
 	/* TIFF images */
-	if (memcmp(buf, "\111\111\052\0") == MATCH) return TYPE_GOPHERPLUS_IMAGE;
-	if (memcmp(buf, "\111\111\053\0") == MATCH) return TYPE_GOPHERPLUS_IMAGE;
+	if (memcmp(buf, "\111\111\052\0", 4) == MATCH) return TYPE_GOPHERPLUS_IMAGE;
+	if (memcmp(buf, "\111\111\053\0", 4) == MATCH) return TYPE_GOPHERPLUS_IMAGE;
 	if (memcmp(buf, "\115\155\0\052", 4) == MATCH) return TYPE_GOPHERPLUS_IMAGE;
 	if (memcmp(buf, "\115\155\0\053", 4) == MATCH) return TYPE_GOPHERPLUS_IMAGE;
 
