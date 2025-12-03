@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck disable=SC2312
 # script for conversion of filetypes.conf into filetypes.h
 # (called by Makefile before compilation)
 # (2020-1-16 // HB9KNS)
@@ -9,11 +10,11 @@ cat <<EOH
 EOH
 # slurp $inpt and get gopher type and list of extensions
 while read -r gtype exts
-do if ! test "$gtype" = "" -o "$gtype" = "#"
+do if ! test "${gtype}" = "" -o "${gtype}" = "#"
 # process extensions, removing trailing SPC,
 # prepending '"' and appending '","gophertype",' to each,
 # and prepending TAB and appending ' \'
- then echo "$exts" | sed -e "s/\([^ ][^ ]*\) */\"\1\",\"$gtype\",/g;s/^/  /;s/\$/ \\\\/"
+ then echo "${exts}" | sed -e "s/\([^ ][^ ]*\) */\"\1\",\"${gtype}\",/g;s/^/  /;s/\$/ \\\\/"
  fi
 done
 cat <<EOF
